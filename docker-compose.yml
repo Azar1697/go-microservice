@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  # 1. Наше Go-приложение
+  app:
+    build: .
+    container_name: go-app
+    ports:
+      - "8080:8080"
+    environment:
+      - MINIO_ENDPOINT=minio:9000  # Обращаемся к сервису по имени "minio"
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    depends_on:
+      - minio # Ждем запуска базы
+    restart: always
+
+  # 2. MinIO (Хранилище файлов)
+  minio:
+    image: minio/minio
+    container_name: minio-storage
+    ports:
+      - "9000:9000" # API
+      - "9001:9001" # Консоль
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    command: server /data --console-address ":9001"
+
+  # 3. Prometheus (Метрики)
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml # Прокидываем наш конфиг
