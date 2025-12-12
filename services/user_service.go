@@ -8,9 +8,9 @@ import (
 
 // UserService хранит данные в памяти
 type UserService struct {
-	users  map[int]models.User // Сама база данных в памяти
-	nextID int                 // Счетчик для ID
-	mu     sync.RWMutex        // Мьютекс для защиты от гонки данных (Race Condition)
+	users  map[int]models.User 
+	nextID int                 
+	mu     sync.RWMutex        
 }
 
 // NewUserService создает новый экземпляр сервиса
@@ -23,8 +23,8 @@ func NewUserService() *UserService {
 
 // Create добавляет пользователя (Thread-safe)
 func (s *UserService) Create(user models.User) models.User {
-	s.mu.Lock()         // БЛОКИРУЕМ доступ для всех остальных
-	defer s.mu.Unlock() // Разблокируем, когда функция закончится
+	s.mu.Lock()         
+	defer s.mu.Unlock() 
 
 	user.ID = s.nextID
 	s.nextID++
@@ -34,7 +34,7 @@ func (s *UserService) Create(user models.User) models.User {
 
 // GetAll возвращает всех пользователей
 func (s *UserService) GetAll() []models.User {
-	s.mu.RLock()         // Блокируем ТОЛЬКО на запись (читать можно многим одновременно)
+	s.mu.RLock()        
 	defer s.mu.RUnlock()
 
 	var allUsers []models.User
@@ -66,7 +66,6 @@ func (s *UserService) Update(id int, updatedUser models.User) (models.User, erro
 		return models.User{}, errors.New("user not found")
 	}
 
-	// Сохраняем ID, чтобы он не изменился случайно
 	updatedUser.ID = id
 	s.users[id] = updatedUser
 	return updatedUser, nil

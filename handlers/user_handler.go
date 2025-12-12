@@ -29,10 +29,8 @@ func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	createdUser := h.service.Create(user)
 
-	// --- ВОТ ЭТО МЫ ДОБАВИЛИ ---
-	// Запускаем асинхронно, клиент получит ответ мгновенно, не ожидая записи лога
 	utils.LogUserAction("CREATE", createdUser.ID)
-	// ---------------------------
+
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
@@ -49,7 +47,7 @@ func (h *UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 
 // GetUserByID - GET /api/users/{id}
 func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r) // Получаем переменные из URL
+	vars := mux.Vars(r) 
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		http.Error(w, "Invalid user ID", http.StatusBadRequest)
@@ -109,5 +107,5 @@ func (h *UserHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	utils.LogUserAction("DELETE", id)
 
-	w.WriteHeader(http.StatusNoContent) // 204 No Content
+	w.WriteHeader(http.StatusNoContent) 
 }

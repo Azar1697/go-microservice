@@ -17,10 +17,9 @@ func NewIntegrationHandler(service *services.IntegrationService) *IntegrationHan
 
 // UploadFile - POST /api/upload
 func (h *IntegrationHandler) UploadFile(w http.ResponseWriter, r *http.Request) {
-	// Ограничиваем размер загрузки (например, 10 МБ)
+
 	r.ParseMultipartForm(10 << 20)
 
-	// Получаем файл из формы (ключ "file")
 	file, header, err := r.FormFile("file")
 	if err != nil {
 		http.Error(w, "Error retrieving the file", http.StatusBadRequest)

@@ -8,8 +8,7 @@ import (
 
 // LimitMiddleware ограничивает количество запросов
 func LimitMiddleware(next http.Handler) http.Handler {
-	// 1000 запросов в секунду (RPS), "всплеск" (burst) до 5000
-	// Burst нужен, чтобы не отбивать запросы, если придет пачка одновременно
+
 	limiter := rate.NewLimiter(1000, 5000)
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

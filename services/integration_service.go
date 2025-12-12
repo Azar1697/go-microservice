@@ -20,7 +20,7 @@ func NewIntegrationService(endpoint, accessKeyID, secretAccessKey, bucketName st
 	// Инициализация клиента
 	minioClient, err := minio.New(endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(accessKeyID, secretAccessKey, ""),
-		Secure: false, // false, так как у нас локально нет HTTPS
+		Secure: false, 
 	})
 	if err != nil {
 		log.Fatalln("Failed to connect to MinIO:", err)

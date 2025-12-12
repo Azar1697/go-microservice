@@ -17,9 +17,7 @@ import (
 )
 
 func main() {
-	// --- НАЧАЛО ИЗМЕНЕНИЙ ---
-	// Пытаемся получить адрес из Docker (переменная окружения).
-	// Если пусто (запуск локально), ставим "localhost:9000".
+
 	minioEndpoint := os.Getenv("MINIO_ENDPOINT")
 	if minioEndpoint == "" {
 		minioEndpoint = "localhost:9000"
@@ -36,7 +34,6 @@ func main() {
 	}
 
 	minioBucket := "user-files"
-	// --- КОНЕЦ ИЗМЕНЕНИЙ ---
 
 	// Запускаем логгер
 	go utils.StartLogger()
@@ -69,7 +66,7 @@ func main() {
 	// 4. Запуск сервера
 	port := ":8080"
 	fmt.Printf("Server starting on port %s...\n", port)
-	fmt.Printf("MinIO connected to: %s\n", minioEndpoint) // Для отладки полезно видеть, куда стучимся
+	fmt.Printf("MinIO connected to: %s\n", minioEndpoint) 
 
 	if err := http.ListenAndServe(port, r); err != nil {
 		log.Fatal(err)

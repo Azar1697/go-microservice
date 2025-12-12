@@ -21,6 +21,6 @@
 
 1. **Клонирование и запуск:**
    ```bash
-   git clone <ссылка-на-твое-репо>
+   git clone https://github.com/Azar1697/go-microservice
    cd go-microservice
-   sudo docker compose up -d --build
+   sudo docker-compose up -d --build

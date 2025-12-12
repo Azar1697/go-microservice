@@ -16,28 +16,28 @@ var TotalRequests = prometheus.NewCounterVec(
 	[]string{"path"},
 )
 
-// Гистограмма времени ответа (Latency) - ТРЕБОВАНИЕ КРИТЕРИЯ 2
+// Гистограмма времени ответа (Latency
 var HttpDuration = prometheus.NewHistogramVec(
 	prometheus.HistogramOpts{
 		Name:    "http_request_duration_seconds",
 		Help:    "Duration of HTTP requests.",
-		Buckets: prometheus.DefBuckets, // Стандартные бакеты времени (0.005, 0.01, 0.025 ...)
+		Buckets: prometheus.DefBuckets, 
 	},
 	[]string{"path"},
 )
 
 func init() {
 	prometheus.MustRegister(TotalRequests)
-	prometheus.MustRegister(HttpDuration) // Регистрируем новую метрику
+	prometheus.MustRegister(HttpDuration) 
 }
 
 func MetricsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		start := time.Now() // Засекаем время
+		start := time.Now() 
 		
 		next.ServeHTTP(w, r)
 		
-		duration := time.Since(start).Seconds() // Считаем длительность
+		duration := time.Since(start).Seconds() 
 		
 		// Записываем данные
 		TotalRequests.WithLabelValues(r.URL.Path).Inc()
