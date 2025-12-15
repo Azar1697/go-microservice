@@ -10,7 +10,7 @@ var LogChannel = make(chan string, 100)
 // StartLogger запускает "вечный цикл", который слушает канал
 func StartLogger() {
 	for msg := range LogChannel {
-		_ = msg
+		fmt.Print(msg)
 	}
 }
 
