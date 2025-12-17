@@ -40,7 +40,7 @@ func main() {
 
 	// 1. Инициализация слоев (Dependency Injection)
 	userService := services.NewUserService()
-	// Передаем полученные настройки в сервис
+
 	integrationService := services.NewIntegrationService(minioEndpoint, minioAccessKey, minioSecretKey, minioBucket)
 
 	userHandler := handlers.NewUserHandler(userService)
